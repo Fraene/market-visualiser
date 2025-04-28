@@ -1,0 +1,19 @@
+<div class="chart">
+    <canvas baseChart type="scatter" [data]="chartData" [options]="chartOptions"></canvas>
+</div>
+<div class="controls">
+    <div class="row">
+        <button (click)="goPrev()"><span class="material-symbols-sharp">arrow_back</span></button>
+        <span class="label">{{ activeTime }}</span>
+        <button (click)="goNext()"><span class="material-symbols-sharp">arrow_forward</span></button>
+    </div>
+    <div class="row">
+        <button (click)="startPlayback()"><span class="material-symbols-sharp">play_arrow</span></button>
+        <button (click)="stopPlayback()"><span class="material-symbols-sharp">stop</span></button>
+        <div class="duration">
+            <span class="label">Play over </span>
+            <input type="number" [(ngModel)]="duration" />
+            <span class="label"> seconds</span>
+        </div>
+    </div>
+</div>
