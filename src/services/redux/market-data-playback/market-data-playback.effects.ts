@@ -58,8 +58,19 @@ export class MarketDataPlaybackEffects {
                 this.store.select(selectThresholds),
                 this.store.select(selectActiveTimeIndex)
             ),
-            filter(([, position, thresholds, activeTimeIndex]) => position >= thresholds[activeTimeIndex!]),
-            map(([,,, activeTimeIndex]) => goToSeriesPlayback({ index: activeTimeIndex! + 1 }))
+            map(([, position, thresholds, activeTimeIndex]) => {
+                const nearestIndex = thresholds.findIndex(x => x > position);
+                return { nearestIndex, thresholds, activeTimeIndex };
+            }),
+            filter(({ thresholds, activeTimeIndex, nearestIndex }) => {
+                if(!thresholds.length)
+                    return false;
+
+                return nearestIndex === -1 || nearestIndex > activeTimeIndex!;
+            }),
+            map(({ nearestIndex }) => {
+                return goToSeriesPlayback({ index: nearestIndex });
+            })
         ));
     }
 }
